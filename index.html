@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Make Your Dream - Character Profile</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(180deg, #fde4f2 0%, #f7bade 35%, #e3bdff 70%, #fce4ec 100%);
+            --glass-bg: rgba(255, 255, 255, 0.25);
+            --glass-border: rgba(255, 255, 255, 0.6);
+            --glass-shadow: 0 8px 32px 0 rgba(235, 120, 180, 0.25);
+            --text-color: #ffffff;
+            --accent-pink: #ff69b4;
+            --accent-purple: #9b51e0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', 'Cormorant Garamond', serif;
+            background: #111;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--text-color);
+        }
+
+        /* 모바일 프레임 */
+        .mobile-frame {
+            width: 100%;
+            max-width: 430px;
+            height: 932px;
+            background: var(--bg-gradient);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            border-radius: 24px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 화면 전환 */
+        .screen {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 40px 24px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            transform: scale(0.96);
+        }
+
+        .screen.active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: scale(1);
+        }
+
+        /* 헤더 */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .icon-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+            transition: all 0.3s ease;
+        }
+
+        .icon-btn:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: scale(1.05);
+        }
+
+        .icon-btn svg {
+            width: 20px;
+            height: 20px;
+            stroke: #fff;
+            fill: none;
+            stroke-width: 1.8;
+        }
+
+        /* ===== 1. 메인 화면 ===== */
+        .start-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-top: -20px;
+        }
+
+        .arch-portal {
+            width: 110px;
+            height: 160px;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            border-radius: 60px 60px 0 0;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.6), inset 0 0 15px rgba(255, 255, 255, 0.4);
+            margin-bottom: 25px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(247, 186, 222, 0.1) 100%);
+        }
+
+        .arch-portal::before {
+            content: '🌙';
+            font-size: 28px;
+            filter: drop-shadow(0 0 8px #fff);
+        }
+
+        .main-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 46px;
+            font-style: italic;
+            font-weight: 600;
+            line-height: 1.1;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 10px rgba(214, 80, 150, 0.4);
+        }
+
+        .orbital-ring {
+            position: relative;
+            display: inline-block;
+        }
+
+        .orbital-ring::after {
+            content: '';
+            position: absolute;
+            top: -10%;
+            left: -15%;
+            width: 130%;
+            height: 120%;
+            border: 1.5px solid rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            transform: rotate(-12deg);
+            pointer-events: none;
+        }
+
+        .sub-title {
+            margin-top: 15px;
+            font-size: 14px;
+            letter-spacing: 2px;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 300;
+        }
+
+        .start-btn {
+            margin-top: 45px;
+            width: 260px;
+            height: 60px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, rgba(255, 182, 218, 0.6) 0%, rgba(255, 126, 187, 0.8) 100%);
+            border: 1.5px solid rgba(255, 255, 255, 0.9);
+            color: #fff;
+            font-size: 20px;
+            letter-spacing: 4px;
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(255, 105, 180, 0.4), inset 0 0 10px rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite alternate;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 30px rgba(255, 105, 180, 0.6), inset 0 0 15px rgba(255, 255, 255, 0.8);
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 8px 20px rgba(255, 105, 180, 0.3); }
+            100% { box-shadow: 0 12px 30px rgba(255, 105, 180, 0.7), 0 0 15px rgba(255, 255, 255, 0.8); }
+        }
+
+        .bottom-settings {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            opacity: 0.8;
+            font-size: 13px;
+        }
+
+        /* ===== 2. 테마 선택 화면 ===== */
+        .theme-title-box {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .theme-main-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 26px;
+            letter-spacing: 3px;
+            font-weight: 600;
+            text-shadow: 0 2px 8px rgba(214, 80, 150, 0.3);
+        }
+
+        .theme-sub-title {
+            font-size: 12px;
+            letter-spacing: 1px;
+            margin-top: 4px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .center-gem {
+            width: 36px;
+            height: 36px;
+            margin: 12px auto;
+            background: linear-gradient(135deg, #ffffff 0%, #ff9ebb 50%, #e066ff 100%);
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.9);
+            animation: floatGem 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes floatGem {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(-6px) rotate(5deg); }
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            max-height: 560px;
+            overflow-y: auto;
+            padding: 5px 4px 15px 4px;
+        }
+
+        .cards-grid::-webkit-scrollbar {
+            display: none;
+        }
+
+        .card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 16px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            backdrop-filter: blur(12px);
+            box-shadow: var(--glass-shadow);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .card:hover {
+            transform: translateY(-4px) scale(1.02);
+            background: rgba(255, 255, 255, 0.4);
+            border-color: #ffffff;
+            box-shadow: 0 10px 25px rgba(255, 126, 187, 0.4);
+        }
+
+        .card-icon {
+            font-size: 28px;
+        }
+
+        .card-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 16px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .theme-footer {
+            text-align: center;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        /* ===== 3. 프로필 팝업 모달 (NEW) ===== */
+        .modal-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(40, 10, 30, 0.5);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-card {
+            width: 100%;
+            max-width: 350px;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 210, 235, 0.35) 100%);
+            border: 1.5px solid rgba(255, 255, 255, 0.9);
+            border-radius: 24px;
+            padding: 24px 20px;
+            box-shadow: 0 15px 35px rgba(214, 80, 150, 0.35), inset 0 0 20px rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(20px);
+            position: relative;
+            transform: translateY(20px) scale(0.95);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .modal-overlay.active .modal-card {
+            transform: translateY(0) scale(1);
+        }
+
+        /* 닫기 버튼 */
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #fff;
+            font-size: 16px;
+            transition: all 0.2s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.6);
+            transform: rotate(90deg);
+        }
+
+        /* 인물 이미지 커스텀 */
+        .profile-img-container {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            border: 3px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 8px 20px rgba(235, 120, 180, 0.4), inset 0 0 10px rgba(255, 255, 255, 0.5);
+            overflow: hidden;
+            margin-bottom: 16px;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+            text-shadow: 0 2px 6px rgba(214, 80, 150, 0.3);
+            color: #ffffff;
+        }
+
+        /* 프로필 상세 정보 목록 */
+        .info-list {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .info-item {
+            background: rgba(255, 255, 255, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 14px;
+            padding: 10px 14px;
+            backdrop-filter: blur(8px);
+        }
+
+        .info-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #ff3e9e;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 3px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .info-value {
+            font-size: 13px;
+            color: #4a2a3b;
+            line-height: 1.4;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="mobile-frame">
+
+        <!-- ================= PAGE 1: START SCREEN ================= -->
+        <section id="startScreen" class="screen active">
+            <header class="header">
+                <button class="icon-btn" aria-label="Profile">
+                    <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                </button>
+                <button class="icon-btn" aria-label="Settings">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                </button>
+            </header>
+
+            <div class="start-content">
+                <div class="arch-portal"></div>
+                <div class="orbital-ring">
+                    <h1 class="main-title">Make<br>Your Dream!</h1>
+                </div>
+                <p class="sub-title">✦ Dreams Come True ✦</p>
+                <button class="start-btn" id="startBtn">✦ START ✦</button>
+            </div>
+
+            <div class="bottom-settings">
+                <div style="font-size: 18px;">🌙</div>
+                <span>Settings</span>
+            </div>
+        </section>
+
+
+        <!-- ================= PAGE 2: THEME SELECT SCREEN ================= -->
+        <section id="themeScreen" class="screen">
+            <header class="header">
+                <button class="icon-btn" id="backBtn" aria-label="Back">
+                    <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                </button>
+                <button class="icon-btn" id="homeBtn" aria-label="Home">
+                    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                </button>
+            </header>
+
+            <div class="theme-title-box">
+                <h2 class="theme-main-title">✦ THEME SELECT ✦</h2>
+                <p class="theme-sub-title">✦ 당신의 꿈을 선택하세요 ✦</p>
+                <div class="center-gem"></div>
+            </div>
+
+            <!-- 복장 카드 목록 -->
+            <div class="cards-grid">
+                <div class="card" onclick="openProfile('Nurse')">
+                    <span class="card-icon">🩺</span>
+                    <span class="card-name">Nurse</span>
+                </div>
+                <div class="card" onclick="openProfile('Flight Attendant')">
+                    <span class="card-icon">✈️</span>
+                    <span class="card-name">Flight Attendant</span>
+                </div>
+                <div class="card" onclick="openProfile('Bunny Girl')">
+                    <span class="card-icon">🐰</span>
+                    <span class="card-name">Bunny Girl</span>
+                </div>
+                <div class="card" onclick="openProfile('School Uniform')">
+                    <span class="card-icon">🏫</span>
+                    <span class="card-name">School Uniform</span>
+                </div>
+                <div class="card" onclick="openProfile('Bikini')">
+                    <span class="card-icon">👙</span>
+                    <span class="card-name">Bikini</span>
+                </div>
+                <div class="card" onclick="openProfile('Teacher')">
+                    <span class="card-icon">👩🏻‍🏫</span>
+                    <span class="card-name">Teacher</span>
+                </div>
+                <div class="card" onclick="openProfile('Police')">
+                    <span class="card-icon">👮‍♀️</span>
+                    <span class="card-name">Police</span>
+                </div>
+                <div class="card" onclick="openProfile('Military')">
+                    <span class="card-icon">🪖</span>
+                    <span class="card-name">Military</span>
+                </div>
+                <div class="card" onclick="openProfile('Maid')">
+                    <span class="card-icon">🧹</span>
+                    <span class="card-name">Maid</span>
+                </div>
+                <div class="card" onclick="openProfile('Sister')">
+                    <span class="card-icon">✝️</span>
+                    <span class="card-name">Sister</span>
+                </div>
+            </div>
+
+            <div class="theme-footer">
+                ✦ 테마를 선택하면 그 공간으로 이동합니다 ✦
+            </div>
+        </section>
+
+
+        <!-- ================= POPUP MODAL (NEW) ================= -->
+        <div class="modal-overlay" id="profileModal">
+            <div class="modal-card">
+                <button class="modal-close" id="modalCloseBtn">&times;</button>
+                
+                <!-- 인물 이미지 -->
+                <div class="profile-img-container">
+                    <img id="modalImg" class="profile-img" src="" alt="Character Image">
+                </div>
+
+                <h3 class="profile-name" id="modalTitle">Character</h3>
+
+                <!-- 상세 프로필 -->
+                <div class="info-list">
+                    <div class="info-item">
+                        <div class="info-label">✦ 직업 (Job)</div>
+                        <div class="info-value" id="modalJob">-</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">✦ 성격 (Personality)</div>
+                        <div class="info-value" id="modalPersonality">-</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">✦ 성적취향 (Preference)</div>
+                        <div class="info-value" id="modalPreference">-</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- JavaScript Navigation & Data handling -->
+    <script>
+        // 1. 캐릭터 프로필 데이터베이스 (원하는 이미지 링크와 설명으로 수정 가능)
+        const characterData = {
+            'Nurse': {
+                name: 'Nurse',
+                img: 'https://raw.githubusercontent.com/kkan99/intu/refs/heads/main/A0.png',
+                job: '간호사',
+                personality: '공감능력, 상냥함, 허당',
+                preference: '펫, 리틀, 스팽키, 후배위 선호'
+            },
+            'Flight Attendant': {
+                name: 'Flight Attendant',
+                img: 'https://raw.githubusercontent.com/kkan99/intu/refs/heads/main/B0.png',
+                job: '승무원',
+                personality: '단정함, 침착함, 차분함',
+                preference: '디그레이디, 공개플, 가슴 빨리기'
+            },
+            'Bunny Girl': {
+                name: 'Bunny Girl',
+                img: 'https://raw.githubusercontent.com/kkan99/intu/refs/heads/main/C0.png',
+                job: '바니걸',
+                personality: '당당함, 츤데레, 자존심, 까칠함',
+                preference: '펫, 브랫, 디그레이디, 상대에게 애무하기'
+            },
+            'School Uniform': {
+                name: 'School Uniform',
+                img: 'https://raw.githubusercontent.com/kkan99/intu/refs/heads/main/D0.png',
+                job: '학생',
+                personality: '새침, 도도, 자존심',
+                preference: '프레이, 리틀, 스팽키, 좌위&기승위 선호'
+            },
+            'Bikini': {
+                name: 'Bikini',
+                img: 'https://raw.githubusercontent.com/kkan99/intu/refs/heads/main/E0.png',
+                job: '(미정)',
+                personality: '털털, 여유, 자유로움, 사교성',
+                preference: '디그레이디, 야외플, 공개플, 오일플'
+            },
+            'Teacher': {
+                name: 'Teacher',
+                img: 'https://raw.githubusercontent.com/kkan99/intu/refs/heads/main/F0.png',
+                job: '선생님',
+                personality: '조용함, 차분함, 원칙주의, 어른스러움',
+                preference: '마미, 스팽키, 서번트, 얼굴 위 사정 선호'
+            },
+            'Police': {
+                name: 'Police',
+                img: 'https://raw.githubusercontent.com/kkan99/intu/refs/heads/main/G0.png',
+                job: '경찰',
+                personality: '정의로움, 장난기, 털털, 의욕과다',
+                preference: '펫, 로프 버니, 디그레이디, 수갑플'
+            },
+            'Military': {
+                name: 'Military',
+                img: 'https://raw.githubusercontent.com/kkan99/intu/refs/heads/main/H0.png',
+                job: '군인',
+                personality: '냉철, 이성적, 털털, 입거침',
+                preference: '스팽키, 브랫, 프레이, 오너, 제압당하기, 커닐링구스'
+            },
+            'Maid': {
+                name: 'Maid',
+                img: 'https://raw.githubusercontent.com/kkan99/intu/refs/heads/main/I0.png',
+                job: '메이드',
+                personality: '순종, 순수함, 질투, 유혹에 능함',
+                preference: '펫, 슬레이브, 디그레이디, 성기 애무'
+            },
+            'Sister': {
+                name: 'Sister',
+                img: 'https://raw.githubusercontent.com/kkan99/intu/refs/heads/main/J0.png',
+                job: '수녀',
+                personality: '신앙심, 차분함, 절제, 소유욕',
+                preference: '미스트레스, 마미, 마조히스트, 과도한 쾌락 선호'
+            }
+        };
+
+        // DOM 요소
+        const startScreen = document.getElementById('startScreen');
+        const themeScreen = document.getElementById('themeScreen');
+        const startBtn = document.getElementById('startBtn');
+        const backBtn = document.getElementById('backBtn');
+        const homeBtn = document.getElementById('homeBtn');
+
+        const profileModal = document.getElementById('profileModal');
+        const modalCloseBtn = document.getElementById('modalCloseBtn');
+        const modalImg = document.getElementById('modalImg');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalJob = document.getElementById('modalJob');
+        const modalPersonality = document.getElementById('modalPersonality');
+        const modalPreference = document.getElementById('modalPreference');
+
+        // 메인 화면 전환
+        startBtn.addEventListener('click', () => {
+            startScreen.classList.remove('active');
+            themeScreen.classList.add('active');
+        });
+
+        const goToStart = () => {
+            closeProfile();
+            themeScreen.classList.remove('active');
+            startScreen.classList.add('active');
+        };
+
+        backBtn.addEventListener('click', goToStart);
+        homeBtn.addEventListener('click', goToStart);
+
+        // 2. 프로필 팝업 열기
+        function openProfile(key) {
+            const data = characterData[key];
+            if (data) {
+                modalImg.src = data.img;
+                modalTitle.textContent = data.name;
+                modalJob.textContent = data.job;
+                modalPersonality.textContent = data.personality;
+                modalPreference.textContent = data.preference;
+
+                profileModal.classList.add('active');
+            }
+        }
+
+        // 3. 프로필 팝업 닫기
+        function closeProfile() {
+            profileModal.classList.remove('active');
+        }
+
+        modalCloseBtn.addEventListener('click', closeProfile);
+        profileModal.addEventListener('click', (e) => {
+            if (e.target === profileModal) {
+                closeProfile();
+            }
+        });
+    </script>
+</body>
+</html>
